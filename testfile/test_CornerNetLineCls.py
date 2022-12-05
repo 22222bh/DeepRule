@@ -158,10 +158,14 @@ def kp_detection(image, db, quiry, nnet, debug=False, decode_func=kp_decode, cud
             tag_masks[b_ind, k] = 1
         tags = np.clip(tags, 0, (out_width - 1) * (out_height - 1))
         if torch.cuda.is_available():
-            images = torch.from_numpy(images).cuda(cuda_id)
-            tags = torch.from_numpy(tags).cuda(cuda_id)
-            weights = torch.from_numpy(weights).cuda(cuda_id)
-            tag_masks = torch.from_numpy(tag_masks).cuda(cuda_id)
+            # images = torch.from_numpy(images).cuda(cuda_id)
+            # tags = torch.from_numpy(tags).cuda(cuda_id)
+            # weights = torch.from_numpy(weights).cuda(cuda_id)
+            # tag_masks = torch.from_numpy(tag_masks).cuda(cuda_id)
+            images = torch.from_numpy(images).to("cuda")
+            tags = torch.from_numpy(tags).to("cuda")
+            weights = torch.from_numpy(weights).to("cuda")
+            tag_masks = torch.from_numpy(tag_masks).to("cuda")
         else:
             images = torch.from_numpy(images)
             tags = torch.from_numpy(tags)

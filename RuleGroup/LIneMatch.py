@@ -175,6 +175,7 @@ def get_data(line, plot_area):
 
 def draw_group(line, im):
     line.sort(key=lambda x: x['bbox'][0])
+    im = Image.fromarray(im)
     draw = ImageDraw.Draw(im)
     xy_list = []
     for key in line:

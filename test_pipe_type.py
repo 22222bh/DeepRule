@@ -115,7 +115,7 @@ def Pre_load_nets(type, id_cuda):
         methods['LineCls'] = [db_line_cls, nnet_line_cls, testing_line_cls]
     return methods
 
-def ocr_result(image_path):
+def ocr_result(image_path): # TODO Azure -> Pytesseract
     subscription_key = "ad143190288d40b79483aa0d5c532724"
     vision_base_url = "https://westus2.api.cognitive.microsoft.com/vision/v2.0/"
     ocr_url = vision_base_url + "read/core/asyncBatchAnalyze"

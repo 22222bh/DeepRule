@@ -168,4 +168,4 @@ def kp_detection(image, db, nnet, debug=False, decode_func=kp_decode, cuda_id=0)
         return top_points_tl, top_points_br
 
 def testing(db, nnet, result_dir, debug=False):
-    return globals()[system_configs.sampling_function](db, nnet, result_dir, debug=debug)
+    return globals()[system_configs.sampling_function](db, nnet, result_dir, debug=debug)   # sampling funciton = kp_detection

@@ -14,7 +14,8 @@ def drawArc(im, group, type):
     :param height: 矩形高占比
     :return:
     '''
-    draw = ImageDraw.Draw(im)
+    pil_im = Image.fromarray(im)
+    draw = ImageDraw.Draw(pil_im)
     xy_list1 = [group[0], group[1]]
     xy_list2 = [group[0], group[2]]
     draw.line(xy_list1, fill=type_dict[type], width=2)
@@ -266,10 +267,11 @@ def GroupPie(image, tls_raw, brs_raw):
             theta_y = math.degrees(math.acos((-y1 / math.sqrt(x1 * x1 + y1 * y1))))
             if x1 < 0:
                 theta_y = 360 - theta_y
-            data_rs.append([theta_y, theta])
+            data_rs.append([theta_y, theta])    # 걍 각도 구하는건가
         data_rs.sort(key=ekey)
         data_pure = []
         for datum in data_rs:
-            data_pure.append(datum[1])
+            # data_pure.append(datum[1])  # 왜 theta만 어팬드를 하지?
+            data_pure.append(datum[1] / 3.6)  # 왜 theta만 어팬드를 하지?
         return image, data_pure
 

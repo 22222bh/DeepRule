@@ -33,6 +33,7 @@ def load_net(testiter, cfg_name, data_dir, cache_dir, cuda_id=0):
     cfg_file = os.path.join(system_configs.config_dir, cfg_name + ".json")
     with open(cfg_file, "r") as f:
         configs = json.load(f)
+
     configs["system"]["snapshot_name"] = cfg_name
     configs["system"]["data_dir"] = data_dir
     configs["system"]["cache_dir"] = cache_dir
@@ -54,7 +55,8 @@ def load_net(testiter, cfg_name, data_dir, cache_dir, cuda_id=0):
     test_iter = system_configs.max_iter if testiter is None else testiter
     print("loading parameters at iteration: {}".format(test_iter))
     dataset = system_configs.dataset
-    db = datasets[dataset](configs["db"], split)
+    print(split)
+    db = datasets[dataset](configs["db"], split)    
     print("building neural network...")
     nnet = NetworkFactory(db)
     print("loading parameters...")
@@ -73,10 +75,10 @@ def Pre_load_nets(type, id_cuda, data_dir, cache_dir):
         testing_bar = importlib.import_module(path).testing
         methods['Bar'] = [db_bar, nnet_bar, testing_bar]
     if type == "Pie":
-        db_pie, nnet_pie = load_net(50000, "CornerNetPurePie", data_dir, cache_dir,
-                                    id_cuda)
         path = 'testfile.test_%s' % "CornerNetPurePie"
         testing_pie = importlib.import_module(path).testing
+        db_pie, nnet_pie = load_net(50000, "CornerNetPurePie", data_dir, cache_dir,
+                                    id_cuda)
         methods['Pie'] = [db_pie, nnet_pie, testing_pie]
     if type == "Line":
         db_line, nnet_line = load_net(50000, "CornerNetLine", data_dir, cache_dir,
@@ -166,7 +168,7 @@ def try_math(image_path, cls_info):
                     (word_bbox[1] + word_bbox[3]) / 2 - y_min, 2))
                 y_mid = (word_bbox[1]+word_bbox[3])/2
                 if dis2max <= dis_max:
-                    dis_max = dis2max
+                    dis_max = dis2maxß
                     max_y = y_mid
                     max_value = float(word_text_pure)
                     if word_text[0] == '-':
@@ -200,6 +202,7 @@ def test(image_path, data_type=0, debug=False, suffix=None, min_value_official=N
         #plot_area = []
         #image_painted, cls_info = GroupCls(image_cls, tls, brs)
         #title2string, min_value, max_value = try_math(image_path, cls_info)
+
         if data_type == 0:
             print("Predicted as BarChart")
             results = methods['Bar'][2](image, methods['Bar'][0], methods['Bar'][1], debug=False)
@@ -208,20 +211,21 @@ def test(image_path, data_type=0, debug=False, suffix=None, min_value_official=N
             bar_data = GroupBarRaw(image, tls, brs)
             return bar_data
         if data_type == 2:
-            print("Predicted as PieChart")
-            results = methods['Pie'][2](image, methods['Pie'][0], methods['Pie'][1], debug=False)
+            # print("Predicted as PieChart")
+            results = methods['Pie'][2](image, methods['Pie'][0], methods['Pie'][1], debug=False)   # testfile/test_CornerNetPurePie.py(170)testing()
             cens = results[0]
             keys = results[1]
             pie_data = GroupPie(image, cens, keys)
             return pie_data
 
         if data_type== 1:
-            print("Predicted as LineChart")
+            # print("Predicted as LineChart")
             results = methods['Line'][2](image, methods['Line'][0], methods['Line'][1], debug=False, cuda_id=1)
             keys = results[0]
             hybrids = results[1]
             image_painted, quiry, keys, hybrids = GroupQuiryRaw(image, keys, hybrids)
             results = methods['LineCls'][2](image, methods['LineCls'][0], quiry, methods['LineCls'][1], debug=False, cuda_id=1)
+            import pdb; pdb.set_trace()
             line_data = GroupLineRaw(image_painted, keys, hybrids, results)
             return line_data
 
@@ -237,15 +241,35 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    methods = Pre_load_nets(args.type, 0, args.data_dir, args.cache_path)
-    target_dir = args.result_path
+    print(args)
+    ###
+    # target_dir = args.result_path
     tar_path = args.image_path
     save_path = args.save_path
     rs_dict = {}
-    images = os.listdir(tar_path)
+    images = os.listdir(tar_path)[:10]
+    dtype = args.type
+    methods = Pre_load_nets(args.type, 0, args.data_dir, args.cache_path)
     for image in tqdm(images):
         path = os.path.join(tar_path, image)
-        data = test(path)
-        rs_dict[image] = data
-    with open(save_path, "w") as f:
-        json.dump(rs_dict, f)
+
+        if dtype=="Pie":
+            data1, data2 = test(path, data_type=2)
+            img = Image.fromarray(data1)
+            img.save(f'./res/pie_{image[:8]}.png')
+            with open("./res/data2.txt", "a") as f:
+                f.write(f"{image[:8]}: {data2}\n\n")
+            data1 = data1.tolist()
+            rs_dict[image] = (data1, data2)
+
+        elif dtype=="Line":
+            data = test(path, data_type=1)
+            print(len(data))
+            with open("./res/data2_line.txt", "a") as f:
+                f.write(f"{image}\n")
+                for d in data:
+                    f.write(f"{d}\n")
+            rs_dict[image] = data
+
+    # with open(save_path, "w") as f:
+    #     json.dump(rs_dict, f)   
