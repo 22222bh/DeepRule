@@ -170,12 +170,11 @@ def get_data(line, plot_area):
     data.sort(key = lambda x: x[0]*100+x[1])
     data_pure = []
     for datum in data:
-        data_pure.append(datum[1])
+        data_pure.append(datum[1] * 100)
     return data_pure
 
 def draw_group(line, im):
     line.sort(key=lambda x: x['bbox'][0])
-    im = Image.fromarray(im)
     draw = ImageDraw.Draw(im)
     xy_list = []
     for key in line:

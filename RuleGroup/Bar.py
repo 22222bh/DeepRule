@@ -23,7 +23,6 @@ def drawLine(im, x, y, w, h, type):
     :param height: 矩形高占比
     :return:
     '''
-
     draw = ImageDraw.Draw(im)
     xy_list = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
     xy_list2 = [(x, y), (x, y+h)]
@@ -78,7 +77,7 @@ def get_data_divided(groups, plot_area):
         data.sort(key = lambda x: x[0]*1000+x[1])
         data_pure = []
         for datum in data:
-            data_pure.append(datum[1])
+            data_pure.append(datum[1] * 100)
         data_divided.append(data_pure)
     return data_divided
 
@@ -224,6 +223,7 @@ def GroupBar(image, tls_raw, brs_raw, plot_area, min_value, max_value):
         drawLine(image, key['bbox'][0], key['bbox'][1], 3, 3, (0, int(255 * key['score']), 0))
     #image.save(tar_dir + id2name[id])
     info = {}
+    bbox = []
     if len(tls) > 0:
         for tar_id in range(1):
             tl_same = []
@@ -237,11 +237,13 @@ def GroupBar(image, tls_raw, brs_raw, plot_area, min_value, max_value):
             #zero_y = estimate_zero_line(brs)
             groups = group_point(tl_same, br_same)
             draw_group(groups, image)
+            bbox.append(groups)
+            
             data = get_data(groups, plot_area)
             draw_data(groups, image, min_value, max_value, plot_area)
             groups_divided = divided_by_color(groups, image_raw)
             data_divided = get_data_divided(groups_divided, plot_area)
-    return image, data_divided
+    return image, data_divided, bbox
 
 def GroupBarRaw(image, tls_raw, brs_raw):
     image_raw = copy.deepcopy(image)

@@ -123,11 +123,13 @@ def GroupCls(image, tls_raw, brs_raw):
             brs.append({'bbox': bbox, 'category_id': category_id, 'score': score})
     tls = get_point(tls, 0.3)
     brs = get_point(brs, 0.3)
+
+    draw = ImageDraw.Draw(image)
+
     for key in tls:
         drawLine(image, key['bbox'][0], key['bbox'][1], 3, 3, (int(255 * key['score']), 0, 0))
     for key in brs:
         drawLine(image, key['bbox'][0], key['bbox'][1], 3, 3, (0, int(255 * key['score']), 0))
-    #image.save(tar_dir + id2name[id])
     info = {}
     if len(tls) > 0:
         for tar_id in range(6):
