@@ -92,30 +92,30 @@ def load_net(testiter, cfg_name, data_dir, cache_dir, result_dir, cuda_id=0):
 
 def Pre_load_nets():
     methods = {}
-    db_cls, nnet_cls = load_net(50000, "CornerNetCls", "clsdata", "pretrained/clsdata/cache",
+    db_cls, nnet_cls = load_net(50000, "CornerNetCls", "annotation", "data/clsdata(1031)/cache",
                                 "clsdata/result")
 
     from testfile.test_line_cls_pure_real import testing
     path = 'testfile.test_%s' % "CornerNetCls"
     testing_cls = importlib.import_module(path).testing
     methods['Cls'] = [db_cls, nnet_cls, testing_cls]
-    db_bar, nnet_bar = load_net(50000, "CornerNetPureBar", "bardata", "pretrained/bardata/cache",
+    db_bar, nnet_bar = load_net(50000, "CornerNetPureBar", "annotation", "data/bardata(1031)/cache",
                                 "bardata/result")
     path = 'testfile.test_%s' % "CornerNetPureBar"
     testing_bar = importlib.import_module(path).testing
     methods['Bar'] = [db_bar, nnet_bar, testing_bar]
-    db_pie, nnet_pie = load_net(50000, "CornerNetPurePie", "piedata", "pretrained/piedata/cache",
+    db_pie, nnet_pie = load_net(50000, "CornerNetPurePie", "annotation", "data/piedata(1008)/cache",
                                 "piedata/result")
     path = 'testfile.test_%s' % "CornerNetPurePie"
     testing_pie = importlib.import_module(path).testing
     methods['Pie'] = [db_pie, nnet_pie, testing_pie]
-    db_line, nnet_line = load_net(50000, "CornerNetLine", "linedata", "pretrained/linedata/cache",
+    db_line, nnet_line = load_net(50000, "CornerNetLine", "annotation", "data/linedata(1028)/cache",
                                   "linedata/result")
     path = 'testfile.test_%s' % "CornerNetLine"
     testing_line = importlib.import_module(path).testing
     methods['Line'] = [db_line, nnet_line, testing_line]
-    db_line_cls, nnet_line_cls = load_net(20000, "CornerNetLineClsReal", "linedata",
-                                          "pretrained/linedata/cache",
+    db_line_cls, nnet_line_cls = load_net(20000, "CornerNetLineClsReal", "annotation",
+                                          "data/linedata(1028)/cache",
                                           "linedata/result")
     path = 'testfile.test_%s' % "CornerNetLineCls"
     testing_line_cls = importlib.import_module(path).testing
@@ -535,10 +535,11 @@ def chart_process(image_path):
 
 if __name__ == "__main__":
 
-    tar_path = 'PATH/TO/DATASET'
-    images = os.listdir(tar_path)
-    from random import shuffle
-    shuffle(images)
+    # tar_path = 'PATH/TO/DATASET'
+    # images = os.listdir(tar_path)
+    # from random import shuffle
+    # shuffle(images)
+    images = ["/home/blee/nfs/challenge_2022/DeepRule_tmp/imgs/796930_figure_2.png", "/home/blee/nfs/challenge_2022/DeepRule_tmp/imgs/1111_bar_AGC.png", "/home/blee/nfs/challenge_2022/DeepRule_tmp/pie_ex.png", "/home/blee/nfs/challenge_2022/DeepRule_tmp/imgs/160124_figure_1.png"]
     for image in tqdm(images):
-        path = os.path.join(tar_path, image)
-        test(path)
+        res = chart_process(images)
+        print(res)

@@ -1,7 +1,9 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: linux-64
+
 @EXPLICIT
+https://repo.anaconda.com/pkgs/main/linux-64/pandas-1.1.5-py37ha9443f7_0.tar.bz2
 https://repo.anaconda.com/pkgs/main/linux-64/_libgcc_mutex-0.1-main.tar.bz2
 https://repo.continuum.io/pkgs/main/linux-64/blas-1.0-mkl.tar.bz2
 https://repo.anaconda.com/pkgs/main/linux-64/ca-certificates-2019.11.27-0.tar.bz2
@@ -93,8 +95,6 @@ https://repo.continuum.io/pkgs/main/linux-64/mkl_fft-1.0.1-py36h3010b51_0.tar.bz
 https://repo.continuum.io/pkgs/main/linux-64/mkl_random-1.0.1-py36h629b387_0.tar.bz2
 https://repo.continuum.io/pkgs/main/linux-64/numpy-1.14.3-py36hcd700cb_1.tar.bz2
 https://repo.continuum.io/pkgs/main/linux-64/opencv-3.3.1-py36h9248ab4_2.tar.bz2
-https://conda.anaconda.org/pytorch/linux-64/pytorch-1.1.0-py3.6_cuda10.0.130_cudnn7.5.1_0.tar.bz2
 https://repo.continuum.io/pkgs/main/linux-64/scipy-1.1.0-py36hfc37229_0.tar.bz2
 https://conda.anaconda.org/caffe2/linux-64/caffe2-cuda8.0-cudnn7-0.8.dev-py36_2018.05.14.tar.bz2
 https://repo.continuum.io/pkgs/main/linux-64/scikit-learn-0.19.1-py36h7aa7ec6_0.tar.bz2
-https://conda.anaconda.org/pytorch/noarch/torchvision-0.2.1-py_2.tar.bz2
