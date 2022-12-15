@@ -7,7 +7,7 @@ cd DeepRule
 conda create  --name DeepRule --file DeepRule.txt python=3.7
 
 # torch is not installed. Please install torch with your own version.
-# Tested version: Torch 1.10.0 with coda 11.3
+# Tested version: Torch 1.10.0 with cuda 11.3
 conda activate DeepRule
 ```
 
